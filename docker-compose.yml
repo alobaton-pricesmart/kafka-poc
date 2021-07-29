@@ -8,7 +8,7 @@ services:
     environment:
       ZOOKEEPER_CLIENT_PORT: 2181
     networks:
-      - te2-local
+      - my-network
   kafka:
     container_name: kafka
     image: confluentinc/cp-kafka:6.2.0
@@ -29,7 +29,7 @@ services:
     volumes:
       - ~/te2/docker/kafka/data:/var/run/docker.sock
     networks:
-      - te2-local
+      - my-network
   schema-registry:
     container_name: schema-registry
     image: confluentinc/cp-schema-registry:6.2.0
@@ -39,7 +39,7 @@ services:
     ports:
       - "8081:8081"
     networks:
-      - te2-local
+      - my-network
 networks:
-    te2-local:
+    my-network:
         driver: bridge
