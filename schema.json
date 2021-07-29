@@ -1,0 +1,14 @@
+{
+  "type": "object",
+  "name": "MessageDto",
+  "namespace": "com.co.kafkapoc.model",
+  "additionalProperties": false,
+  "properties": {
+    "message": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "message"
+  ]
+}
