@@ -27,7 +27,7 @@ services:
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
       KAFKA_AUTO_CREATE_TOPICS_ENABLE: 'true'
     volumes:
-      - ~/te2/docker/kafka/data:/var/run/docker.sock
+      - ./docker/kafka/data:/var/run/docker.sock
     networks:
       - my-network
   schema-registry:
