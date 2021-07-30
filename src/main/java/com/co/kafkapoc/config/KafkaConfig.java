@@ -17,7 +17,9 @@ import org.springframework.kafka.core.DefaultKafkaProducerFactory;
 import org.springframework.kafka.core.KafkaTemplate;
 
 import com.co.kafkapoc.constants.KafkapocConstants;
+import com.co.kafkapoc.model.MessageDto;
 
+import io.confluent.kafka.serializers.KafkaJsonDeserializerConfig;
 import io.confluent.kafka.serializers.json.KafkaJsonSchemaDeserializer;
 import io.confluent.kafka.serializers.json.KafkaJsonSchemaSerializer;
 
@@ -59,6 +61,8 @@ public class KafkaConfig
 		{
 			props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
 			props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, KafkaJsonSchemaDeserializer.class);
+			props.put(KafkaJsonDeserializerConfig.JSON_VALUE_TYPE, MessageDto.class);
+			props.put(KafkapocConstants.JSON_FAIL_INVALID_SCHEMA, true);
 		}
 		else
 		{
