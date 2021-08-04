@@ -17,11 +17,11 @@ public class KafkaProducer
 	private KafkaTemplate<String, String> kafkaTemplate;
 
 	@Value("${kafka.topic}")
-	private String kafkaTopic;
+	private String topic;
 
 	public void produce(MessageDto data)
 	{
-		Message<MessageDto> message = MessageBuilder.withPayload(data).setHeader(KafkaHeaders.TOPIC, kafkaTopic).build();
+		Message<MessageDto> message = MessageBuilder.withPayload(data).setHeader(KafkaHeaders.TOPIC, topic).build();
 
 		kafkaTemplate.send(message);
 	}
