@@ -45,7 +45,7 @@ public class KafkaConfig
 	}
 
 	@Bean
-	public KafkaTemplate<String, String> kafkaProducerContainerFactory()
+	public KafkaTemplate<String, MessageDto> kafkaProducerContainerFactory()
 	{
 		return new KafkaTemplate<>(new DefaultKafkaProducerFactory<>(getProperties(false)));
 	}

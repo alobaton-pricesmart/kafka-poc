@@ -14,7 +14,7 @@ import com.co.kafkapoc.model.MessageDto;
 public class KafkaProducer
 {
 	@Autowired
-	private KafkaTemplate<String, String> kafkaTemplate;
+	private KafkaTemplate<String, MessageDto> kafkaTemplate;
 
 	@Value("${kafka.topic}")
 	private String topic;
