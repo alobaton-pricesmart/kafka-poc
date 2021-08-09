@@ -20,13 +20,13 @@ public class KafkaConsumer
 	public void consume(@Payload GenericMessage<MessageDto> message, @Headers MessageHeaders messageHeaders)
 	{
 		MessageDto messageDto = message.getPayload();
-		if (messageDto != null)
+		if (messageDto == null)
 		{
-			LOGGER.info(messageDto.getMessage());
+			LOGGER.error("empty message!");
 		}
 		else
 		{
-			LOGGER.error("empty message!");
+			LOGGER.info(messageDto.getMessage());
 		}
 	}
 }

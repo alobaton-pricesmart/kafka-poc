@@ -5,20 +5,23 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.kafka.listener.MessageListener;
 
-import com.co.kafkapoc.model.MessageDto;
+import com.fasterxml.jackson.databind.JsonNode;
 
-public class KafkaDynamicListener implements MessageListener<String, MessageDto>
+public class KafkaDynamicListener implements MessageListener<String, JsonNode>
 {
 	private static final Logger LOGGER = LoggerFactory.getLogger(KafkaDynamicListener.class);
 
 	@Override
-	public void onMessage(ConsumerRecord<String, MessageDto> data)
+	public void onMessage(ConsumerRecord<String, JsonNode> data)
 	{
-		if (data.value() == null) {
-			LOGGER.info("value is null");
+		if (data.value() == null)
+		{
+			LOGGER.info("empty message!");
 		}
-		
-		LOGGER.info(data.value().toString());
+		else
+		{
+			LOGGER.info(data.value().toString());
+		}
 	}
 
 }
