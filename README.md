@@ -34,6 +34,36 @@ Start the application:
 mvn spring-boot:run -DskipTests=true
 ```
 
+Produce a message:
+
+```bash
+curl --location --request POST 'http://localhost:8080/kafka/produce' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+    "message": "Hello World!"
+}'
+```
+
+Start a dynamic consumer:
+
+```bash
+curl --location --request POST 'http://localhost:8080/kafka/consumer/topic-name' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+    "message": "Hello World!"
+}'
+```
+
+Produce a message to a dynamic consumer:
+
+```bash
+curl --location --request POST 'http://localhost:8080/kafka/produce/topic-name' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+    "message": "Hello World!"
+}'
+```
+
 ## Resources
 
 To convert JSON to String online:
