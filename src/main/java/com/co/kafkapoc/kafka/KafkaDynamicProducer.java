@@ -32,6 +32,9 @@ public class KafkaDynamicProducer
 
 	@Value("${kafka.schemaRegistryUrl}")
 	String schemaRegistryUrl;
+	
+	@Value("${kafka.autoRegisterSchemas}")
+	private boolean autoRegisterSchemas;
 
 	public void produce(String topic, MessageDto data)
 	{
@@ -57,6 +60,7 @@ public class KafkaDynamicProducer
 		props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, KafkaJsonSchemaSerializer.class);
 		props.put(KafkaJsonDeserializerConfig.JSON_VALUE_TYPE, MessageDto.class);
 		props.put(KafkapocConstants.JSON_FAIL_INVALID_SCHEMA, true);
+		props.put(KafkapocConstants.AUTO_REGISTER_SCHEMAS, autoRegisterSchemas);
 		return props;
 	}
 }

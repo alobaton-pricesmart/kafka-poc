@@ -28,13 +28,16 @@ import io.confluent.kafka.serializers.json.KafkaJsonSchemaSerializer;
 public class KafkaConfig
 {
 	@Value("${kafka.bootstrap.url}")
-	String bootstrapServersUrl;
+	private String bootstrapServersUrl;
 
 	@Value("${kafka.groupId}")
-	String groupId;
+	private String groupId;
 
 	@Value("${kafka.schemaRegistryUrl}")
-	String schemaRegistryUrl;
+	private String schemaRegistryUrl;
+	
+	@Value("${kafka.autoRegisterSchemas}")
+	private boolean autoRegisterSchemas;
 
 	@Bean
 	ConcurrentKafkaListenerContainerFactory<String, String> kafkaListenerContainerFactory()
@@ -68,6 +71,7 @@ public class KafkaConfig
 		{
 			props.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
 			props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, KafkaJsonSchemaSerializer.class);
+			props.put(KafkapocConstants.AUTO_REGISTER_SCHEMAS, autoRegisterSchemas);
 		}
 		return props;
 	}
