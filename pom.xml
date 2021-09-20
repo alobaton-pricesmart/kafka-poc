@@ -17,8 +17,8 @@
 	</parent>
 	<repositories>
 		<repository>
-			<id>jitpack.io</id>
-			<url>https://jitpack.io</url>
+			<id>Confluent Repository</id>
+			<url>https://packages.confluent.io/maven/</url>
 		</repository>
 		<repository>
 			<snapshots>
