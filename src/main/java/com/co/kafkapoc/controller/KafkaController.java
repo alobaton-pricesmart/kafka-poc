@@ -33,13 +33,13 @@ public class KafkaController
 	}
 	
 	@PostMapping(path = "/produce/{topic}")
-	public void produce(@PathVariable String topic, @RequestBody MessageDto dto)
+	public void produceDynamic(@PathVariable String topic, @RequestBody MessageDto dto)
 	{
 		kafkaDynamicProducer.produce(topic, dto);
 	}
 
 	@PostMapping(path = "/consumer/{topic}")
-	public void produceDynamic(@PathVariable String topic)
+	public void startDynamicConsumer(@PathVariable String topic)
 	{
 		kafkaDynamicConsumer.start(topic);
 	}
