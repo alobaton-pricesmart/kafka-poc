@@ -1,4 +1,4 @@
-package com.co.kafkapoc.kafka;
+package com.co.kafkapoc.kafka.dynamic;
 
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.slf4j.Logger;

@@ -7,9 +7,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.co.kafkapoc.kafka.KafkaDynamicConsumer;
-import com.co.kafkapoc.kafka.KafkaDynamicProducer;
-import com.co.kafkapoc.kafka.KafkaProducer;
+import com.co.kafkapoc.kafka.basic.KafkaProducer;
+import com.co.kafkapoc.kafka.dynamic.KafkaDynamicConsumer;
+import com.co.kafkapoc.kafka.dynamic.KafkaDynamicProducer;
 import com.co.kafkapoc.model.MessageDto;
 
 @RestController

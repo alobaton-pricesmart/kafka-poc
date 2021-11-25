@@ -1,4 +1,4 @@
-package com.co.kafkapoc.kafka;
+package com.co.kafkapoc.kafka.dynamic;
 
 import java.util.HashMap;
 import java.util.Map;

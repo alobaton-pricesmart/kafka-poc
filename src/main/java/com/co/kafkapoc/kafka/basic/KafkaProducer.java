@@ -1,4 +1,4 @@
-package com.co.kafkapoc.kafka;
+package com.co.kafkapoc.kafka.basic;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
