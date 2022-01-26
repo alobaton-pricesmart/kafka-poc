@@ -15,7 +15,7 @@ import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.stereotype.Component;
 
 import com.co.kafkapoc.constants.KafkapocConstants;
-import com.co.kafkapoc.model.MessageDto;
+import com.co.kafkapoc.dto.MessageDto;
 
 import io.confluent.kafka.serializers.KafkaJsonDeserializerConfig;
 import io.confluent.kafka.serializers.json.KafkaJsonSchemaSerializer;

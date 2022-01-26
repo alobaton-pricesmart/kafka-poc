@@ -8,7 +8,7 @@ import org.springframework.messaging.Message;
 import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.stereotype.Component;
 
-import com.co.kafkapoc.model.MessageDto;
+import com.co.kafkapoc.dto.MessageDto;
 
 @Component
 public class KafkaProducer
@@ -16,7 +16,7 @@ public class KafkaProducer
 	@Autowired
 	private KafkaTemplate<String, MessageDto> kafkaTemplate;
 
-	@Value("${kafka.topic}")
+	@Value("${kafka.topics.my-topic}")
 	private String topic;
 
 	public void produce(MessageDto data)

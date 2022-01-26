@@ -1,7 +1,6 @@
 package com.co.kafkapoc.kafka.basic;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.messaging.MessageHeaders;
 import org.springframework.messaging.handler.annotation.Headers;
@@ -9,24 +8,28 @@ import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.support.GenericMessage;
 import org.springframework.stereotype.Component;
 
-import com.co.kafkapoc.model.MessageDto;
+import com.co.kafkapoc.dto.MessageDto;
+
+import lombok.extern.slf4j.Slf4j;
 
 @Component
+@Slf4j
 public class KafkaConsumer
 {
-	private static final Logger LOGGER = LoggerFactory.getLogger(KafkaConsumer.class);
+	@Value("${kafka.topics.my-topic}")
+	private String topic;
 
-	@KafkaListener(topics = "${kafka.topic}", containerFactory = "kafkaListenerContainerFactory")
+	@KafkaListener(topics = "${kafka.topics.my-topic}", containerFactory = "kafkaListenerContainerFactory")
 	public void consume(@Payload GenericMessage<MessageDto> message, @Headers MessageHeaders messageHeaders)
 	{
 		MessageDto messageDto = message.getPayload();
 		if (messageDto == null)
 		{
-			LOGGER.error("empty message!");
+			log.error("empty message!");
 		}
 		else
 		{
-			LOGGER.info(messageDto.getMessage());
+			log.info("message received from " + topic + ": " + messageDto.toString());
 		}
 	}
 }

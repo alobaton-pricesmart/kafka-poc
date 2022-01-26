@@ -17,7 +17,7 @@ import org.springframework.kafka.core.DefaultKafkaProducerFactory;
 import org.springframework.kafka.core.KafkaTemplate;
 
 import com.co.kafkapoc.constants.KafkapocConstants;
-import com.co.kafkapoc.model.MessageDto;
+import com.co.kafkapoc.dto.MessageDto;
 
 import io.confluent.kafka.serializers.KafkaJsonDeserializerConfig;
 import io.confluent.kafka.serializers.json.KafkaJsonSchemaDeserializer;
