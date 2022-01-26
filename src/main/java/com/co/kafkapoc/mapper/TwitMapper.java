@@ -5,7 +5,8 @@ import org.mapstruct.Mapper;
 import com.co.kafkapoc.dto.TwitDto;
 import com.co.kafkapoc.model.Twit;
 
-@Mapper
+// componentModel allows mapping with dependency injection
+@Mapper(componentModel = "spring")
 public interface TwitMapper
 {
 	TwitDto entityToDto(Twit entity);
