@@ -95,7 +95,6 @@ public class KafkaConfig
 		props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServersUrl);
 		props.put(ConsumerConfig.GROUP_ID_CONFIG, groupId);
 		props.put(KafkaPocConstants.SCHEMA_REGISTRY_URL, schemaRegistryUrl);
-		props.put(KafkaPocConstants.JSON_WRITE_DATES_ISO_8601, true);
 
 		if (isConsumer)
 		{
@@ -109,6 +108,7 @@ public class KafkaConfig
 			props.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
 			props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, KafkaJsonSchemaSerializer.class);
 			props.put(KafkaPocConstants.AUTO_REGISTER_SCHEMAS, autoRegisterSchemas);
+			props.put(KafkaPocConstants.JSON_WRITE_DATES_ISO_8601, true);
 		}
 		return props;
 	}

@@ -11,6 +11,7 @@ import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory;
 import org.springframework.kafka.core.DefaultKafkaConsumerFactory;
 import org.springframework.kafka.listener.ConcurrentMessageListenerContainer;
 import org.springframework.kafka.listener.adapter.RetryingMessageListenerAdapter;
+import org.springframework.kafka.support.serializer.ErrorHandlingDeserializer;
 import org.springframework.retry.support.RetryTemplate;
 import org.springframework.stereotype.Component;
 
@@ -32,21 +33,22 @@ public class KafkaDynamicConsumer
 
 	@Value("${kafka.schemaRegistryUrl}")
 	private String schemaRegistryUrl;
-	
+
 	@Autowired
 	private RetryTemplate retryTemplate;
 
 	/**
 	 * Start a dynamic consumer.
-	 * @param topic Dynamic consumer topic.
+	 * 
+	 * @param topic
+	 *          Dynamic consumer topic.
 	 */
 	public void start(String topic)
 	{
 		final ConcurrentMessageListenerContainer<String, JsonNode> container = createContainer(topic);
 
-		KafkaDynamicListener listener = new KafkaDynamicListener();	
-		RetryingMessageListenerAdapter<String, JsonNode> retryingListener =
-        new RetryingMessageListenerAdapter<>(listener, retryTemplate);
+		KafkaDynamicListener listener = new KafkaDynamicListener();
+		RetryingMessageListenerAdapter<String, JsonNode> retryingListener = new RetryingMessageListenerAdapter<>(listener, retryTemplate);
 		container.setupMessageListener(retryingListener);
 		container.start();
 	}
@@ -55,7 +57,7 @@ public class KafkaDynamicConsumer
 	{
 		final ConcurrentKafkaListenerContainerFactory<String, JsonNode> factory = new ConcurrentKafkaListenerContainerFactory<>();
 		factory.setConsumerFactory(new DefaultKafkaConsumerFactory<>(getDynamicConsumerProperties()));
-		
+
 		return factory.createContainer(topic);
 	}
 
@@ -65,10 +67,13 @@ public class KafkaDynamicConsumer
 		props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServersUrl);
 		props.put(ConsumerConfig.GROUP_ID_CONFIG, groupId);
 		props.put(KafkaPocConstants.SCHEMA_REGISTRY_URL, schemaRegistryUrl);
-		props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
-		props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, KafkaJsonSchemaDeserializer.class);
 		props.put(KafkaJsonDeserializerConfig.JSON_VALUE_TYPE, JsonNode.class);
 		props.put(KafkaPocConstants.JSON_FAIL_INVALID_SCHEMA, true);
+		props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, ErrorHandlingDeserializer.class);
+		props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, ErrorHandlingDeserializer.class);
+		props.put(ErrorHandlingDeserializer.KEY_DESERIALIZER_CLASS, StringDeserializer.class);
+		props.put(ErrorHandlingDeserializer.VALUE_DESERIALIZER_CLASS, KafkaJsonSchemaDeserializer.class);
+
 		return props;
 	}
 }
