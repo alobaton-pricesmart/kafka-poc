@@ -1,5 +1,7 @@
 package com.co.kafkapoc.controller;
 
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,7 +24,7 @@ public class KafkaController
 
 	@Autowired
 	private KafkaDynamicProducer kafkaDynamicProducer;
-	
+
 	@Autowired
 	private KafkaDynamicConsumer kafkaDynamicConsumer;
 
@@ -31,11 +33,11 @@ public class KafkaController
 	{
 		kafkaProducer.produce(dto);
 	}
-	
+
 	@PostMapping(path = "/produce/{topic}")
-	public void produceDynamic(@PathVariable String topic, @RequestBody MessageDto dto)
+	public void produceDynamic(@PathVariable String topic, @RequestBody Map<String, Object> body)
 	{
-		kafkaDynamicProducer.produce(topic, dto);
+		kafkaDynamicProducer.produce(topic, body);
 	}
 
 	@PostMapping(path = "/consumer/{topic}")
