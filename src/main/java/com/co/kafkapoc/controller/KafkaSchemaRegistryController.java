@@ -1,6 +1,8 @@
 package com.co.kafkapoc.controller;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.Arrays;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +26,9 @@ public class KafkaSchemaRegistryController
 		TestTypesDto testTypesDto = new TestTypesDto();
 		testTypesDto.setArrayRequired(Arrays.asList(1));
 		testTypesDto.setBooleanRequired(true);
-		testTypesDto.setDateRequired(LocalDateTime.now());
+		testTypesDto.setLocalDateTimeRequired(LocalDateTime.now());
+		testTypesDto.setLocalDateRequired(LocalDate.now());
+		testTypesDto.setLocalTimeRequired(LocalTime.now());
 		testTypesDto.setIntegerRequired(1);
 		testTypesDto.setNumberRequired(1.5);
 		testTypesDto.setStringRequired("test");
