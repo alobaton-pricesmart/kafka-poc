@@ -16,6 +16,7 @@ import org.springframework.retry.support.RetryTemplate;
 import org.springframework.stereotype.Component;
 
 import com.co.kafkapoc.constants.KafkaPocConstants;
+import com.co.kafkapoc.exception.handler.CustomErrorHandlingDeserializer;
 import com.fasterxml.jackson.databind.JsonNode;
 
 import io.confluent.kafka.serializers.KafkaJsonDeserializerConfig;
@@ -69,8 +70,8 @@ public class KafkaDynamicConsumer
 		props.put(KafkaPocConstants.SCHEMA_REGISTRY_URL, schemaRegistryUrl);
 		props.put(KafkaJsonDeserializerConfig.JSON_VALUE_TYPE, JsonNode.class);
 		props.put(KafkaPocConstants.JSON_FAIL_INVALID_SCHEMA, true);
-		props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, ErrorHandlingDeserializer.class);
-		props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, ErrorHandlingDeserializer.class);
+		props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, CustomErrorHandlingDeserializer.class);
+		props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, CustomErrorHandlingDeserializer.class);
 		props.put(ErrorHandlingDeserializer.KEY_DESERIALIZER_CLASS, StringDeserializer.class);
 		props.put(ErrorHandlingDeserializer.VALUE_DESERIALIZER_CLASS, KafkaJsonSchemaDeserializer.class);
 

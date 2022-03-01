@@ -15,6 +15,7 @@ import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory;
 import org.springframework.kafka.core.DefaultKafkaConsumerFactory;
 import org.springframework.kafka.core.DefaultKafkaProducerFactory;
 import org.springframework.kafka.core.KafkaTemplate;
+import org.springframework.kafka.support.serializer.ErrorHandlingDeserializer;
 import org.springframework.retry.backoff.ExponentialBackOffPolicy;
 import org.springframework.retry.policy.AlwaysRetryPolicy;
 import org.springframework.retry.support.RetryTemplate;
@@ -69,7 +70,8 @@ public class KafkaConfig
 	@Bean
 	public KafkaTemplate<String, TestTypesDto> testTypesDtoKafkaTemplate()
 	{
-		return new KafkaTemplate<>(new DefaultKafkaProducerFactory<>(getProperties(false)));
+		DefaultKafkaProducerFactory<String, TestTypesDto> defaultKafkaProducerFactory = new DefaultKafkaProducerFactory<>(getProperties(false));
+		return new KafkaTemplate<>(defaultKafkaProducerFactory);
 	}
 
 	@Bean
@@ -98,8 +100,10 @@ public class KafkaConfig
 
 		if (isConsumer)
 		{
-			props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
-			props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, KafkaJsonSchemaDeserializer.class);
+			props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, ErrorHandlingDeserializer.class);
+			props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, ErrorHandlingDeserializer.class);
+			props.put(ErrorHandlingDeserializer.KEY_DESERIALIZER_CLASS, StringDeserializer.class);
+			props.put(ErrorHandlingDeserializer.VALUE_DESERIALIZER_CLASS, KafkaJsonSchemaDeserializer.class);
 			props.put(KafkaJsonDeserializerConfig.JSON_VALUE_TYPE, MessageDto.class);
 			props.put(KafkaPocConstants.JSON_FAIL_INVALID_SCHEMA, true);
 		}

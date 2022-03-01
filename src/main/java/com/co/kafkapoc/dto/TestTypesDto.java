@@ -4,10 +4,9 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import com.co.kafkapoc.config.JacksonConfiguration;
-import com.co.kafkapoc.util.DateUtil;
-import com.fasterxml.jackson.annotation.JsonFormat;
+import com.co.kafkapoc.util.KafkaJsonSchemaJacksonUtil;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import lombok.Data;
@@ -53,13 +52,13 @@ public class TestTypesDto implements Serializable
 	private List<Integer> arrayRequired;
 
 	@JsonProperty(required = false)
-	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = DateUtil.DATE_PATTERN_DD_MM_YYYY_HH_MM_SS, timezone = DateUtil.ZONE_ID)
-	@JsonSerialize(using = JacksonConfiguration.LocalDateTimeSerializer.class)
+	@JsonSerialize(using = KafkaJsonSchemaJacksonUtil.LocalDateTimeSerializer.class)
+	@JsonDeserialize(using = KafkaJsonSchemaJacksonUtil.LocalDateTimeDeserializer.class)
 	private LocalDateTime dateNotRequired;
 
 	@JsonProperty(required = true)
-	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = DateUtil.DATE_PATTERN_DD_MM_YYYY_HH_MM_SS, timezone = DateUtil.ZONE_ID)
-	@JsonSerialize(using = JacksonConfiguration.LocalDateTimeSerializer.class)
+	@JsonSerialize(using = KafkaJsonSchemaJacksonUtil.LocalDateTimeSerializer.class)
+	@JsonDeserialize(using = KafkaJsonSchemaJacksonUtil.LocalDateTimeDeserializer.class)
 	private LocalDateTime dateRequired;
 
 }
