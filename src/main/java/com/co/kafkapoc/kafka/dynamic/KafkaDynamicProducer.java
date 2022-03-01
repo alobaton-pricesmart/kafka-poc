@@ -22,6 +22,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import io.confluent.kafka.serializers.KafkaJsonDeserializerConfig;
 import io.confluent.kafka.serializers.json.KafkaJsonSchemaSerializer;
+import io.confluent.kafka.serializers.json.KafkaJsonSchemaSerializerConfig;
 
 @Component
 public class KafkaDynamicProducer
@@ -68,7 +69,7 @@ public class KafkaDynamicProducer
 		props.put(KafkaJsonDeserializerConfig.JSON_VALUE_TYPE, MessageDto.class);
 		props.put(KafkaPocConstants.JSON_FAIL_INVALID_SCHEMA, true);
 		props.put(KafkaPocConstants.AUTO_REGISTER_SCHEMAS, autoRegisterSchemas);
-		props.put(KafkaPocConstants.JSON_WRITE_DATES_ISO_8601, true);
+		props.put(KafkaJsonSchemaSerializerConfig.WRITE_DATES_AS_ISO8601, true);
 		return props;
 	}
 }

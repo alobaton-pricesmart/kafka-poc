@@ -27,6 +27,7 @@ import com.co.kafkapoc.dto.TestTypesDto;
 import io.confluent.kafka.serializers.KafkaJsonDeserializerConfig;
 import io.confluent.kafka.serializers.json.KafkaJsonSchemaDeserializer;
 import io.confluent.kafka.serializers.json.KafkaJsonSchemaSerializer;
+import io.confluent.kafka.serializers.json.KafkaJsonSchemaSerializerConfig;
 
 @Configuration
 @EnableKafka
@@ -112,7 +113,7 @@ public class KafkaConfig
 			props.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
 			props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, KafkaJsonSchemaSerializer.class);
 			props.put(KafkaPocConstants.AUTO_REGISTER_SCHEMAS, autoRegisterSchemas);
-			props.put(KafkaPocConstants.JSON_WRITE_DATES_ISO_8601, true);
+			props.put(KafkaJsonSchemaSerializerConfig.WRITE_DATES_AS_ISO8601, true);
 		}
 		return props;
 	}
