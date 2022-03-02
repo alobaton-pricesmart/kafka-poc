@@ -25,12 +25,9 @@ public class KafkaSchemaRegistryController
 		testTypesDto.setArrayRequired(Arrays.asList(1));
 		testTypesDto.setBooleanRequired(true);
 		testTypesDto.setLocalDateTimeRequired(LocalDateTime.now());
-		// testTypesDto.setLocalDateRequired(LocalDate.now());
-		// testTypesDto.setLocalTimeRequired(LocalTime.now());
 		testTypesDto.setIntegerRequired(1);
 		testTypesDto.setNumberRequired(1.5);
 		testTypesDto.setStringRequired("test");
 		kafkaSchemaRegistryProducer.produce(testTypesDto);
 	}
-
 }
