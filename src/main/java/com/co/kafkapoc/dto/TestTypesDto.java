@@ -5,21 +5,20 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 import io.confluent.kafka.schemaregistry.annotations.Schema;
 import lombok.Data;
 import lombok.ToString;
 
 @Schema(
-		value = "{\"$schema\":\"http://json-schema.org/draft-07/schema#\",\"title\":\"TestTypesDto\",\"type\":\"object\",\"additionalProperties\":false,\"properties\":{\"stringNotRequired\":{\"oneOf\":[{\"type\":\"null\",\"title\":\"Notincluded\"},{\"type\":\"string\"}]},\"stringRequired\":{\"type\":\"string\"},\"booleanNotRequired\":{\"oneOf\":[{\"type\":\"null\",\"title\":\"Notincluded\"},{\"type\":\"boolean\"}]},\"booleanRequired\":{\"type\":\"boolean\"},\"numberNotRequired\":{\"oneOf\":[{\"type\":\"null\",\"title\":\"Notincluded\"},{\"type\":\"number\"}]},\"numberRequired\":{\"type\":\"number\"},\"integerNotRequired\":{\"oneOf\":[{\"type\":\"null\",\"title\":\"Notincluded\"},{\"type\":\"integer\"}]},\"integerRequired\":{\"type\":\"integer\"},\"arrayNotRequired\":{\"oneOf\":[{\"type\":\"null\",\"title\":\"Notincluded\"},{\"type\":\"array\",\"items\":{\"type\":\"integer\"}}]},\"arrayRequired\":{\"type\":\"array\",\"items\":{\"type\":\"integer\"}},\"localDateTimeNotRequired\":{\"oneOf\":[{\"type\":\"null\",\"title\":\"Notincluded\"},{\"type\":\"string\"}]},\"localDateTimeRequired\":{\"type\":\"string\"}},\"required\":[\"stringRequired\",\"booleanRequired\",\"numberRequired\",\"integerRequired\",\"arrayRequired\",\"localDateTimeRequired\"]}",
+		value = "{\"$schema\":\"http://json-schema.org/draft-07/schema#\",\"type\":\"object\",\"properties\":{\"stringNotRequired\":{\"type\":[\"string\",\"null\"]},\"stringRequired\":{\"type\":\"string\"},\"booleanNotRequired\":{\"type\":[\"boolean\",\"null\"]},\"booleanRequired\":{\"type\":\"boolean\"},\"numberNotRequired\":{\"type\":[\"number\",\"null\"]},\"numberRequired\":{\"type\":\"number\"},\"integerNotRequired\":{\"type\":[\"integer\",\"null\"]},\"integerRequired\":{\"type\":\"integer\"},\"arrayNotRequired\":{\"type\":[\"array\",\"null\"],\"items\":{\"type\":\"integer\"}},\"arrayRequired\":{\"type\":\"array\",\"items\":{\"type\":\"integer\"}},\"localDateTimeNotRequired\":{\"type\":[\"string\",\"null\"]},\"localDateTimeRequired\":{\"type\":\"string\"}},\"required\":[\"stringRequired\",\"booleanRequired\",\"numberRequired\",\"integerRequired\",\"arrayRequired\",\"localDateTimeRequired\"]}",
 		refs = {})
+@JsonPropertyOrder
 @Data
 @ToString
 public class TestTypesDto implements Serializable
 {
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -680996837223788859L;
 
 	@JsonProperty(required = false)
