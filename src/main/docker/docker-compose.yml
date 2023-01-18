@@ -1,0 +1,130 @@
+version: '2'
+services:
+    zookeeper:
+        container_name: zookeeper
+        image: confluentinc/cp-zookeeper:6.2.0
+        ports:
+            - "2181:2181"
+        environment:
+            ZOOKEEPER_CLIENT_PORT: 2181
+        networks:
+            - local
+    kafka:
+        container_name: kafka
+        image: confluentinc/cp-kafka:6.2.0
+        ports:
+            - "9092:9092"
+            - "29092:29092"
+        depends_on:
+            - zookeeper
+        environment:
+            KAFKA_ADVERTISED_HOST_NAME: kafka
+            ALLOW_PLAINTEXT_LISTENER: "yes"
+            KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+            KAFKA_LISTENERS: PLAINTEXT://:9092,PLAINTEXT_HOST://0.0.0.0:29092
+            KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092,PLAINTEXT_HOST://localhost:29092
+            KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+            KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+            KAFKA_AUTO_CREATE_TOPICS_ENABLE: 'true'
+        volumes:
+            - ~/te2/docker/kafka/data:/var/run/docker.sock
+        networks:
+            - local
+    schema-registry:
+        container_name: schema-registry
+        image: confluentinc/cp-schema-registry:6.2.0
+        environment:
+            SCHEMA_REGISTRY_HOST_NAME: zookeeper
+            SCHEMA_REGISTRY_KAFKASTORE_CONNECTION_URL: zookeeper:2181
+        depends_on:
+            - zookeeper
+            - kafka
+        ports:
+            - "8081:8081"
+        networks:
+            - local
+    kafka-connect:
+        image: confluentinc/cp-kafka-connect:5.2.1
+        container_name: kafka-connect
+        ports:
+            - 8083:8083
+        environment:
+            CONNECT_BOOTSTRAP_SERVERS: "kafka:9092"
+            CONNECT_REST_PORT: 8083
+            CONNECT_GROUP_ID: compose-connect-group
+            CONNECT_CONFIG_STORAGE_TOPIC: docker-connect-configs
+            CONNECT_OFFSET_STORAGE_TOPIC: docker-connect-offsets
+            CONNECT_STATUS_STORAGE_TOPIC: docker-connect-status
+            CONNECT_KEY_CONVERTER: io.confluent.connect.avro.AvroConverter
+            CONNECT_KEY_CONVERTER_SCHEMA_REGISTRY_URL: 'http://schema-registry:8081'
+            CONNECT_VALUE_CONVERTER: io.confluent.connect.avro.AvroConverter
+            CONNECT_VALUE_CONVERTER_SCHEMA_REGISTRY_URL: 'http://schema-registry:8081'
+            CONNECT_INTERNAL_KEY_CONVERTER: "org.apache.kafka.connect.json.JsonConverter"
+            CONNECT_INTERNAL_VALUE_CONVERTER: "org.apache.kafka.connect.json.JsonConverter"
+            CONNECT_REST_ADVERTISED_HOST_NAME: "kafka-connect"
+            CONNECT_LOG4J_ROOT_LOGLEVEL: "INFO"
+            CONNECT_LOG4J_LOGGERS: "org.apache.kafka.connect.runtime.rest=WARN,org.reflections=ERROR"
+            CONNECT_CONFIG_STORAGE_REPLICATION_FACTOR: "1"
+            CONNECT_OFFSET_STORAGE_REPLICATION_FACTOR: "1"
+            CONNECT_STATUS_STORAGE_REPLICATION_FACTOR: "1"
+            CONNECT_PLUGIN_PATH: '/Users/alvaro.lobaton/kafka_2.13-2.8.0/connectors'
+        volumes:
+            - ./connect/wikimedia.properties:/connect/wikimedia.properties
+            - ./connect/elasticsearch.properties:/connect/elasticsearch.properties
+        depends_on:
+            - zookeeper
+            - kafka
+            - schema-registry
+        networks:
+            - local
+    rest-proxy:
+        image: confluentinc/cp-kafka-rest:6.2.0
+        depends_on:
+            - kafka
+            - schema-registry
+        ports:
+            - 8082:8082
+        hostname: rest-proxy
+        container_name: rest-proxy
+        environment:
+            KAFKA_REST_HOST_NAME: rest-proxy
+            KAFKA_REST_BOOTSTRAP_SERVERS: 'kafka:9092'
+            KAFKA_REST_LISTENERS: "http://0.0.0.0:8082"
+            KAFKA_REST_SCHEMA_REGISTRY_URL: 'http://schema-registry:8081'
+        networks:
+            - local
+    postgres:
+        container_name: postgres
+        image: postgres
+        ports:
+            - "5432:5432"
+        environment:
+            POSTGRES_USER: "te2admin"
+            POSTGRES_PASSWORD: "foobar"
+            POSTGRES_DB: dev
+        volumes:
+            - ~/te2/docker/postgres-data:/var/lib/postgresql/data
+        networks:
+            - local
+    elasticsearch:
+        image: docker.elastic.co/elasticsearch/elasticsearch:7.16.3
+        container_name: elasticsearch
+        environment:
+            - node.name=elasticsearch
+            - cluster.name=es-elasticsearch-cluster
+            - cluster.initial_master_nodes=elasticsearch
+            - bootstrap.memory_lock=true
+            - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+        ulimits:
+            memlock:
+                soft: -1
+                hard: -1
+        volumes:
+            - ./elasticsearch/data:/usr/share/elasticsearch/data
+        ports:
+            - 9200:9200
+        networks:
+            - local
+networks:
+    local:
+        driver: bridge
